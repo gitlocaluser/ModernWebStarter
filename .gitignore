@@ -1,0 +1,12 @@
+﻿# Dependencies
+/node_modules
+
+# Next.js build output
+/.next
+
+# Environment variables
+/.env
+/.env.local
+
+# Keep public env
+!/.env.public
