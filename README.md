@@ -5,10 +5,12 @@ A quick Next.js setup with Tailwind CSS v4, shadcn/ui, and NextAuth.js for authe
 ## 🚀 Getting Started
 
 ### 1. Clone the Repository
+Choose a folder name for your project and clone the repository:
 ```sh
-git clone https://github.com/gitlocaluser/my-new-webapp.git
-cd my-new-webapp
+git clone https://github.com/gitlocaluser/ModernWebStarter.git your-project-name
+cd your-project-name
 ```
+Replace `your-project-name` with your desired folder name.
 
 ### 2. Install Dependencies
 ```sh
@@ -30,3 +32,7 @@ Create a `.env.local` file and add your API keys for authentication (Google, Git
 - [Tailwind CSS v4](https://tailwindcss.com/docs)
 - [shadcn/ui](https://ui.shadcn.com)
 - [NextAuth.js](https://next-auth.js.org)
+
+## 📜 License
+This project is licensed under the MIT License.
+
