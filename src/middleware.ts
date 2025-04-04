@@ -2,27 +2,43 @@ import { getToken } from 'next-auth/jwt'
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
+const secret = process.env.NEXTAUTH_SECRET
+
 export async function middleware(request: NextRequest) {
-  const token = await getToken({ req: request })
+  // Get the pathname
+  const path = request.nextUrl.pathname
   
-  // Check if the path starts with /my
-  if (request.nextUrl.pathname.startsWith('/my')) {
+  // Get the token using next-auth
+  const token = await getToken({ 
+    req: request,
+    secret: secret
+  })
+
+  // Protected routes check
+  if (path.startsWith('/my')) {
     if (!token) {
-      // Redirect unauthenticated users to login
-      return NextResponse.redirect(new URL('/auth', request.url))
+      // Redirect unauthenticated users to the login page
+      const url = new URL('/auth', request.url)
+      url.searchParams.set('callbackUrl', path)
+      return NextResponse.redirect(url)
     }
 
-    // Check if user has an active subscription
-    // You'll need to customize this based on where you store subscription info
-    if (!token.subscription?.status === 'active') {
-      return NextResponse.redirect(new URL('/pricing', request.url))
+    // Optional: Add role-based access control
+    if (token.role && token.role !== 'user') {
+      return new NextResponse(
+        JSON.stringify({ message: 'Unauthorized access' }),
+        { status: 403 }
+      )
     }
   }
 
   return NextResponse.next()
 }
 
-// Configure which routes to run middleware on
+// Update the config to protect the /my route
 export const config = {
-  matcher: '/my/:path*'
+  matcher: [
+    '/my/:path*',
+    '/api/protected/:path*'
+  ]
 }
